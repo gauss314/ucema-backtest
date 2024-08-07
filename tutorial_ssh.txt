@@ -1,0 +1,14 @@
+
+# Primero crean el par de llaves, la privada que se queda siempre en su compu, y la publica que es la que comparten
+ssh-keygen -t ed25519 -C "pongan_su_correo_o_cualquier_otra_cosa@gmail.com"
+
+# Con este registrn el par de llaves
+ssh-add $HOME\.ssh\id_ed25519
+
+# Con este comando copian la PUBLICA en el portapaples para poder compartir con cualquier otra compu con la que quieran identificarse
+Get-Content $HOME\.ssh\id_ed25519.pub | clip
+
+# Con este comando corroboran que el servidor al que preguntan tiene la publica de tu correspondiente privada
+ssh -T git@github.com
+
+
