@@ -3,7 +3,7 @@ import streamlit as st
 import datetime
 
 st.title("Python para finanzas")
-st.markdown("> Mini prueba de backtesting")
+st.markdown("> Mini prueba de backtesting.")
 
 RSI_Q = 15
 FAST = 20
