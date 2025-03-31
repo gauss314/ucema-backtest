@@ -197,7 +197,9 @@ def eventDrivenLong(df):
             results.append(0)
             i +=1
 
-    result = pd.concat ([df,pd.Series(data=results, index=df.index)], axis=1)
+    strategy = pd.Series(index=df.index, dtype=float)
+    strategy.iloc[:len(results)] = results
+    result = pd.concat([df, strategy], axis=1)
     result.columns.values[-1] = "strategy"
     return result
 
