@@ -13,7 +13,8 @@ def getData(ticker: str, start: str = None, end:str = None, src:str = 'yahoo') -
         
     """
     if src == 'yahoo':
-        data = yf.download(ticker, start=start, end=end, multi_level_index=False, auto_adjust=True, progress=False)
+        data = yf.download(ticker, start=start, end=end, auto_adjust=True, progress=False)
+        data.columns = data.columns.droplevel(1)
         data['vol_mln'] = data.Volume * data.Close / 10**6
         data['chg'] = data.Close.pct_change()
         data.columns = ['open', 'high', 'low', 'close', 'vol_n', 'vol_mln', 'pct_change']
