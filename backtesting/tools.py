@@ -5,7 +5,7 @@ import datetime
 
 def getData(ticker: str, start: str = None, end: str = None, src: str = 'yahoo') -> pd.DataFrame:
     if src == 'yahoo':
-        data = yf.download(ticker, start=start, end=end, auto_adjust=True, progress=False)
+        data = yf.download([ticker], start=start, end=end, auto_adjust=True, multi_level_index=False, progress=False)
         if isinstance(data.columns, pd.MultiIndex):
             data.columns = data.columns.get_level_values(-1)
         data = data[['Open', 'High', 'Low', 'Close', 'Volume']].copy()
