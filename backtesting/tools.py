@@ -3,29 +3,19 @@ import pandas as pd
 import numpy as np
 import datetime
 
-def getData(ticker: str, start: str = None, end:str = None, src:str = 'yahoo') -> pd.DataFrame:
-    """
-    Parameters:
-        ticker (str): Es el ticker a descargar
-        
-    Return:
-        Devuelve un dataframe OHLCV con las columnas 'open', 'high', 'low', 'close', 'vol_n', 'vol_mln', 'pct_change'
-        
-    """
+def getData(ticker: str, start: str = None, end: str = None, src: str = 'yahoo') -> pd.DataFrame:
     if src == 'yahoo':
         data = yf.download(ticker, start=start, end=end, auto_adjust=True, progress=False)
-        # data.columns = data.columns.droplevel(1)
-        data['vol_mln'] = data.Volume * data.Close / 10**6
-        data['chg'] = data.Close.pct_change()
-        data.columns = ['open', 'high', 'low', 'close', 'vol_n', 'vol_mln', 'pct_change']
         if isinstance(data.columns, pd.MultiIndex):
             data.columns = data.columns.get_level_values(-1)
-                
+        data = data[['Open', 'High', 'Low', 'Close', 'Volume']].copy()
+        data.columns = ['open', 'high', 'low', 'close', 'vol_n']
+        data['vol_mln'] = data.vol_n * data.close / 1e6
+        data['pct_change'] = data.close.pct_change()
     else:
         data = pd.DataFrame()
-        
-        
     return data
+
 
 def addSignal(data: pd.DataFrame, 
               fast: int = 5, # La cantidad de valores para la media movil rapida
